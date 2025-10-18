@@ -1,0 +1,144 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Dashboard</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+ <style>.wholeBg {
+ background-image: url('https://images.pexels.com/photos/1118873/pexels-photo-1118873.jpeg?cs=srgb&dl=pexels-jplenio-1118873.jpg&fm=jpg');
+ background-size: cover;
+}</style>
+
+
+</head>
+
+<body>
+<div class="weatherContent d-flex flex-column text-warning  wholeBg" style="min-height: 100vh;">
+
+
+  <div class=" d-flex justify-content-center align-items-center m-5">   
+             <i class="bi bi-geo-alt mx-2"></i>
+            <input  class="border rounded-4 px-4 bg-dark "id="userPlace" type="text" placeholder="place">
+            <button  onclick="getWeatherData()"  class="rounded-5 bg-dark text-warning btn "><i class="fa-solid fa-magnifying-glass mx-3"></i></button>
+             <h5 id="country" class="m-3 fw-lighter" style="font-size: 14px;"></h5>
+             <h5 id="city" class="m-3 fw-lighter" style="font-size: 14px;"></h5>
+  </div>
+        
+        
+
+
+<div class="d-flex justify-content-between">
+        <!-- LEFT SECTION -->
+ <div class="weather-left">
+      <div class="d-flex align-items-center justify-content-between m-5 ">
+        <div class="text-primary">
+          <div  class="fw-lighter"  id="temp" style="font-size: 130px;"></div>
+          <div   id="description" class="fs-1 fw-lighter"></div>
+        </div>
+         </div>
+    
+
+
+ </div>
+
+   <!-- RIGHT SECTION -->
+ <div class=" d-flex justify-content-center align-items-center flex-column">
+
+  
+   
+
+       <div class="weatherDetails d-flex">
+         <div  class="m-4" id="wind">
+
+           </div>
+
+            <div  class="m-4" id="humidity">
+
+           </div>
+    </div> 
+  </div>
+
+</div>
+
+
+
+
+
+
+</div>
+</body>
+
+<script>
+
+
+const getWeatherData=async()=>{
+
+const userLocation=userPlace.value
+// console.log(userLocation);
+if(userLocation)
+{
+
+try{
+    const result= await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${userLocation}&appid=8ac5c4d57ba6a4b3dfcf622700447b1e&units=metric`)
+
+if(result.status==200)
+{
+    const response=await result.json()
+    country.innerHTML=`${response.sys.country}`
+    city.innerHTML=`${response.name}`
+    temp.innerHTML=`${response.main.temp}°C`
+    description.innerHTML=`${response.weather[0].description}`
+
+    wind.innerHTML=` 
+                   <i class="bi bi-wind" >Wind</i>
+               <p  style="font-size: 30px;">${response.wind.speed} Km/hr</p>
+               `
+
+    humidity.innerHTML=`               
+                <i class="bi bi-droplet">Humidity</i>
+               <p  style="font-size: 30px;">${response.main.humidity} %</p>`
+  
+    if(response.main.humidity>90)
+    {
+    humidity.style.color="blue"
+    }
+
+
+}
+else{
+    alert("weather forecast for the location cant be accessed!!")
+}
+}
+catch(err){
+    console.log(err);
+    
+}
+
+
+}
+else{
+    alert("fill the form immediately")
+}
+}
+
+
+
+
+
+   
+</script>
+
+
+
+
+    
+
+</html>
